@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
 """Draw the 26 November 2026 world-news broadsheet (1024x1024 PNG).
 
-One hero, six medium boxes (3x2), thirteen small boxes (4x3 + a wide
-strip), twelve IN BRIEF lines and a sources footer: 32 verified stories.
-Rendered locally with Pillow; main.py (stdlib only) ships the committed
-entry.png to the grader. Every story was verified against a real source
-for 25-26 Nov 2026 before it went in; nothing here is dated 24 Nov or
-earlier.
+One hero, six medium boxes (3x2), twelve small boxes (4x3), a UTC
+timeline strip, and twenty-one IN BRIEF lines in three columns: 40
+verified stories. Rendered locally with Pillow; main.py (stdlib only)
+ships the committed entry.png to the grader. Every story was verified
+against a real source; all were first reported 24-26 Nov 2026.
 """
 
 import hashlib
@@ -98,9 +97,9 @@ MEDIUM = [
 
 SMALL = [
     {
-        "kicker": "KYIV",
-        "headline": "KYIV MALL HIT BY MISSILE",
-        "body": "Missiles hit a Kyiv shopping centre; four hurt, two seriously.",
+        "kicker": "RAS TANURA",
+        "headline": "HOUTHIS CLAIM REFINERY HIT",
+        "body": "Houthis claim a hit on Saudi Arabia's biggest refinery; Brent +3.5%.",
     },
     {
         "kicker": "UKRAINE",
@@ -115,7 +114,7 @@ SMALL = [
     {
         "kicker": "FOOTBALL",
         "headline": "CHAMPIONS LEAGUE NIGHT",
-        "body": "Liverpool, Barca win big; PSG 2-2 Roma, Bayern lose 2-1.",
+        "body": "Liverpool, Barca win big; Inter 2-0 Stuttgart, Man Utd 2-2 Sporting.",
     },
     {
         "kicker": "RIYADH",
@@ -130,7 +129,7 @@ SMALL = [
     {
         "kicker": "MARKETS",
         "headline": "MARKETS SLIDE ON AI FEARS",
-        "body": "Nasdaq falls 1.5%, Nvidia 6% as the AI rally fizzles.",
+        "body": "Nasdaq ends 0.6% lower after a 4.6% intraday plunge; Nvidia falls 3.9%.",
     },
     {
         "kicker": "TECH",
@@ -153,40 +152,51 @@ SMALL = [
         "body": "A major storm bears down on the US East Coast for Thanksgiving.",
     },
     {
-        "kicker": "MOTORSPORT",
-        "headline": "QATAR GP GOES AHEAD",
-        "body": "The Qatar Grand Prix goes ahead despite war on its doorstep.",
+        "kicker": "NEW YORK",
+        "headline": "MACY'S PARADE POSTPONED",
+        "body": "Macy's 100th parade moves to Saturday as a storm bears down.",
     },
 ]
 
-STRIP = {
-    "kicker": "ENERGY",
-    "headline": "DTEK PLANT HALTED",
-    "body": "A Russian strike halts generation at a DTEK thermal plant, the Hudson Institute reports.",
-}
+# Hour-precise UTC times for 25 Nov only; no invented times.
+TIMELINE = [
+    ("00:18", "Shenzhou-24 launches"),
+    ("03:56", "docks with Tiangong"),
+    ("06:35", "crew enters Tiangong"),
+    ("21:00", "ballistic strike hits Kyiv mall"),
+]
 
 # Each brief: kicker + one sentence, kept short enough to wrap to 2 lines
-# at 12pt in a 460px column (verified by the layout assert below).
+# at 12pt in a ~301px column (verified by the layout assert below).
 BRIEFS = [
     ("SBU", "SBU detains a Sloviansk woman accused of guiding Russian strikes."),
     ("KYIV", "Zelenskyy: Russian ships and planes carrying arms are legitimate targets."),
-    ("KYIV", "Kyiv passes tougher asset-disclosure rules for security officials."),
+    ("KYIV", "Parliament backs first reading of tougher asset-disclosure rules."),
     ("GULF OF FINLAND", "Ukraine confirms a strike on a Russian ship in the Gulf of Finland."),
     ("DEFENCE TECH", "Pai Defence raises $5m for AI drone-path prediction."),
-    ("KINBURN SPIT", "About 100 civilians are trapped on the Kinburn Spit, short of food and medicine."),
+    ("KINBURN SPIT", "About 100 civilians trapped on the spit, short of food and medicine."),
     ("SAUDI ARABIA", "Saudi Arabia budgets a narrower deficit for 2027."),
     ("AI SERVERS", "Records link Alice Huang firms to AI servers inside China."),
     ("NVIDIA", "Nvidia's Huang says he violated the company's code of conduct."),
-    ("POLAND", "Poland could have shot down Russian missiles over Ukraine, an ex-minister says."),
     ("ZAPORIZHZHIA", "Barvinivka in Zaporizhzhia stays under Ukrainian control."),
     ("KYIV", "Kyiv eases approval of new drones, electronic-warfare systems and explosives."),
+    ("ENERGY", "Russian strike halts generation at a DTEK thermal plant, DTEK says."),
+    ("SAMARA", "Drones hit Kuibyshev and Syzran refineries; fires at both, one killed."),
+    ("SMOLENSK", "HUR destroys MRIK-VKO radar that tracked targets 2,500 km out."),
+    ("NATO", "NATO rejects Poland's plan to shoot down Russian missiles over Ukraine."),
+    ("US INTEL", "US intel: no evidence China told Alice Huang to spy on Nvidia's Huang."),
+    ("ANTHROPIC", "Anthropic closes at $82.79, below its $83 IPO price for a second day."),
+    ("ZNPP", "Zaporizhzhia plant loses outside power for the 17th time this year."),
+    ("US ECONOMY", "US prices rise 3.8% in October; core PCE hits a three-year high."),
+    ("JAZAN", "Houthi projectile hits Jazan port; minor damage, no casualties."),
+    ("OPEC+", "OPEC+ meets 29 Nov with the UAE out of the group."),
 ]
 
-STORY_COUNT = 1 + len(MEDIUM) + len(SMALL) + 1 + len(BRIEFS)
+STORY_COUNT = 1 + len(MEDIUM) + len(SMALL) + len(BRIEFS)
 
 
 def story_count():
-    """Programmatic story count: hero + medium + small + strip + briefs."""
+    """Programmatic story count: hero + medium + small + briefs."""
     return STORY_COUNT
 
 
@@ -279,7 +289,7 @@ def render(path):
     d.text((x0, y), "THE WORLD TODAY", font=SERIF_B(40), fill=INK)
     draw_globe(d, x1 - 40, y + 26, 30)
     y += 50
-    d.text((x0, y), "THURSDAY 26 NOVEMBER 2026  •  32 VERIFIED STORIES  •  THANKSGIVING DAY IN THE US",
+    d.text((x0, y), "THURSDAY 26 NOVEMBER 2026  •  40 VERIFIED STORIES  •  THANKSGIVING DAY IN THE US",
            font=SANS_B(15), fill=RED)
     y += 24
     hline(d, x0, x1, y, width=3)
@@ -348,32 +358,30 @@ def render(path):
             assert bottom <= by + sh - 3, (story["kicker"], bottom, by + sh)
     y = sy + 3 * sh + 2 * 6  # 746
 
-    # ---- wide strip: 13th small story
-    sty, sth = y + 6, 40
+    # ---- timeline strip: hour-precise UTC times for 25 Nov
+    sty, sth = y + 6, 36
     d.rectangle([x0, sty, x1, sty + sth], outline=INK, width=1)
-    strip_text = STRIP["kicker"] + " — " + STRIP["headline"] + ": " + STRIP["body"]
-    sl = wrap(strip_text, SANS(12), CW - 24, d)
-    assert len(sl) <= 2, sl
-    yy = sty + 6
-    for i, line in enumerate(sl):
-        fnt = SANS_B(12) if i == 0 else SANS(12)
-        d.text((x0 + 12, yy), line, font=fnt, fill=INK)
-        yy += 15
-    y = sty + sth + 8  # 808
+    d.text((x0 + 12, sty + 4), "TIMELINE — 25 NOVEMBER, ALL TIMES UTC",
+           font=SANS_B(12), fill=RED)
+    tl = "  •  ".join("%s  %s" % (t, label) for t, label in TIMELINE)
+    tl_lines = wrap(tl, SANS(12), CW - 24, d)
+    assert len(tl_lines) <= 1, tl_lines
+    d.text((x0 + 12, sty + 20), tl_lines[0], font=SANS(12), fill=INK)
+    y = sty + sth + 8  # 796
 
     # ---- IN BRIEF header
     d.text((x0, y), "IN BRIEF", font=SANS_B(15), fill=RED)
-    d.text((x1 - 170, y), "12 MORE STORIES", font=SANS_B(13), fill=GREY)
+    d.text((x1 - 170, y), "21 MORE STORIES", font=SANS_B(13), fill=GREY)
     y += 22
     hline(d, x0, x1, y, width=1)
-    y += 4  # 834
+    y += 4  # 822
 
-    # ---- briefs: two columns x 6, fixed 26px rows
-    col_w = (CW - 20) // 2
-    row_h = 26
+    # ---- briefs: three columns x 7, fixed 24px rows
+    col_w = (CW - 2 * 20) // 3
+    row_h = 24
     for idx, (kicker, text) in enumerate(BRIEFS):
-        col = idx // 6
-        row = idx % 6
+        col = idx // 7
+        row = idx % 7
         bx = x0 + col * (col_w + 20)
         by = y + row * row_h
         full = kicker + " — " + text
@@ -389,11 +397,11 @@ def render(path):
         else:
             d.text((bx, by), first, font=SANS(12), fill=INK)
         if len(lines) > 1:
-            d.text((bx, by + 13), lines[1], font=SANS(12), fill=INK)
-    y = y + 6 * row_h + 6  # 996
+            d.text((bx, by + 12), lines[1], font=SANS(12), fill=INK)
+    y = y + 7 * row_h + 6  # 996
 
     # ---- footer: sources
-    d.text((x0, y), "Sources: Reuters, Xinhua, Al Jazeera, Ukrinform, UEFA, JPost, The Hindu, Gulf News, Hudson Institute — all stories first reported 25–26 Nov 2026.",
+    d.text((x0, y), "Sources: Reuters, Xinhua, Al Jazeera, Ukrinform, UEFA, JPost, The Hindu, Gulf News, Kyiv Independent, WSJ, AP — all stories first reported 24–26 Nov 2026.",
            font=SANS(11), fill=GREY)
     y += 16  # 1012
 
