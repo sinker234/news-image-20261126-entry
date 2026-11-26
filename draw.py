@@ -1,18 +1,11 @@
 #!/usr/bin/env python3
 """Draw the 26 November 2026 world-news broadsheet (1024x1024 PNG).
 
-Round 4 (regression fix): restores the round-2 layout geometry that
-scored judge 971,449 / rank 879 — hero + 6 mediums (3x2) + 12 smalls
-(4x3) + UTC timeline strip + 21 IN BRIEF lines in three columns: 40
-verified stories. Round 3's push to 50 stories shrank every font,
-truncated most smalls' second facts and dropped the timeline strip,
-and the judge fell ~22k to 949,581 / rank 3,404. This round folds in
-all 10 of round 3's new verified stories by swapping out the 10
-weakest round-2 items instead of crowding, and fixes two factual
-errors (tariff rates; Anthropic close). Rendered locally with Pillow;
-main.py (stdlib only) ships the committed entry.png to the grader.
-Every story was verified against a real source; all were first
-reported 24-26 Nov 2026.
+One hero, six medium boxes (3x2), twelve small boxes (4x3), a UTC
+timeline strip, and twenty-one IN BRIEF lines in three columns: 40
+verified stories. Rendered locally with Pillow; main.py (stdlib only)
+ships the committed entry.png to the grader. Every story was verified
+against a real source; all were first reported 24-26 Nov 2026.
 """
 
 import hashlib
@@ -62,9 +55,8 @@ MEDIUM = [
     {
         "kicker": "TRADE",
         "headline": "US PROPOSES TARIFFS ON 14 PARTNERS",
-        "body": ("Washington proposes Section 301 duties on 14 partners "
-                 "after an eight-month probe; Vietnam faces 35%, "
-                 "China 20%."),
+        "body": ("Washington proposes Section 301 duties on 14 partners; "
+                 "Vietnam faces 35%, China 20%."),
     },
     {
         "kicker": "SPACE",
@@ -129,6 +121,11 @@ SMALL = [
         "body": "Houthi drone hits Riyadh's tallest tower again; 11 hurt.",
     },
     {
+        "kicker": "TENNIS",
+        "headline": "SINNER OUT OF AUSTRALIAN OPEN",
+        "body": "Sinner to miss the Australian Open after knee surgery.",
+    },
+    {
         "kicker": "MARKETS",
         "headline": "MARKETS SLIDE ON AI FEARS",
         "body": "Nasdaq ends 0.6% lower after a 4.6% intraday plunge; Nvidia falls 3.9%.",
@@ -139,29 +136,24 @@ SMALL = [
         "body": "Microsoft declares an internal 'Code Red' after a historic outage.",
     },
     {
+        "kicker": "CHIP CURBS",
+        "headline": "US CURBS SLOW CHINA'S AI",
+        "body": "US chip curbs delay Z.AI's flagship AI model, Reuters reports.",
+    },
+    {
+        "kicker": "UNITED STATES",
+        "headline": "ABREGO GARCIA LEAVES FOR SPAIN",
+        "body": "Abrego Garcia leaves the US for Spain, ending a 20-month fight.",
+    },
+    {
+        "kicker": "WEATHER",
+        "headline": "STORM BEARS DOWN ON THANKSGIVING",
+        "body": "A major storm bears down on the US East Coast for Thanksgiving.",
+    },
+    {
         "kicker": "NEW YORK",
         "headline": "MACY'S PARADE POSTPONED",
         "body": "Macy's 100th parade moves to Saturday as a storm bears down.",
-    },
-    {
-        "kicker": "CAIRO",
-        "headline": "CAIRO TANKER FIRE KILLS 31",
-        "body": "Ring Road tanker fire kills 31, injures 21; 27 vehicles charred.",
-    },
-    {
-        "kicker": "SPACE",
-        "headline": "FCC CLEARS 1M SPACEX SATELLITES",
-        "body": "FCC clears SpaceX to deploy up to 1m satellites as orbital AI data centres.",
-    },
-    {
-        "kicker": "MUSK",
-        "headline": "MUSK'S $18BN SHARE GIFT",
-        "body": "Two SpaceX shares for every child in the US.",
-    },
-    {
-        "kicker": "TENNIS",
-        "headline": "SINNER OUT OF AUSTRALIAN OPEN",
-        "body": "Two-time champion out after knee surgery.",
     },
 ]
 
@@ -178,8 +170,14 @@ TIMELINE = [
 BRIEFS = [
     ("SBU", "SBU detains a Sloviansk woman accused of guiding Russian strikes."),
     ("KYIV", "Zelenskyy: Russian ships and planes carrying arms are legitimate targets."),
-    ("GULF OF FINLAND", "Zelenskyy confirms Ukraine struck the Sparta II cargo ship on 21 Nov."),
+    ("NORTH KOREA", "Kim vows to build more nuclear weapons after touring nuclear plants, KCNA says."),
+    ("GULF OF FINLAND", "Ukraine confirms a strike on a Russian ship in the Gulf of Finland."),
+    ("GAZA", "Netanyahu says Israel killed Hamas economy minister Khaled Abu Nada overnight."),
+    ("KINBURN SPIT", "About 100 civilians trapped on the spit, short of food and medicine."),
+    ("SAUDI ARABIA", "Saudi Arabia budgets a narrower deficit for 2027."),
+    ("AI SERVERS", "Records link Alice Huang firms to AI servers inside China."),
     ("NVIDIA", "Nvidia's Huang says he violated the company's code of conduct."),
+    ("ZAPORIZHZHIA", "Barvinivka in Zaporizhzhia stays under Ukrainian control."),
     ("KYIV", "Kyiv eases approval of new drones, electronic-warfare systems and explosives."),
     ("ENERGY", "Russian strike halts generation at a DTEK thermal plant, DTEK says."),
     ("SAMARA", "Drones hit Kuibyshev and Syzran refineries; fires at both, one killed."),
@@ -190,13 +188,7 @@ BRIEFS = [
     ("ZNPP", "Zaporizhzhia plant loses outside power for the 17th time this year."),
     ("US ECONOMY", "US prices rise 3.8% in October; core PCE hits a three-year high."),
     ("JAZAN", "Houthi projectile hits Jazan port; minor damage, no casualties."),
-    ("OPEC+", "OPEC+ meets 29 Nov; the UAE quit the group in May."),
-    ("NORTH KOREA", "Kim calls for wider tactical nuclear deployment, KCNA reports."),
-    ("CALIFORNIA", "Record king tides flood the coast; 30-ft waves, Posey Tube shut."),
-    ("MISSISSIPPI", "Six die, three of them children, as a Cessna 210 crashes off Mississippi."),
-    ("RODGERS", "Steelers cut Rodgers a day after benching him; he hit back on TV."),
-    ("CHIP CURBS", "US chip curbs slow China's AI; Z.AI flagship model delayed."),
-    ("GAZA", "Netanyahu says Israel killed Hamas's economy minister overnight."),
+    ("OPEC+", "OPEC+ meets 29 Nov with the UAE out of the group."),
 ]
 
 STORY_COUNT = 1 + len(MEDIUM) + len(SMALL) + len(BRIEFS)
@@ -408,7 +400,7 @@ def render(path):
     y = y + 7 * row_h + 6  # 996
 
     # ---- footer: sources
-    d.text((x0, y), "Sources: Reuters, AP, CNN, Al Jazeera, Ukrinform, Xinhua, UEFA, JPost, Haaretz, KCNA, AFP, Gulf News, Kyiv Independent, WSJ — all stories first reported 24–26 Nov 2026.",
+    d.text((x0, y), "Sources: Reuters, Xinhua, Al Jazeera, Ukrinform, UEFA, JPost, Haaretz, KCNA, The Hindu, Gulf News, Kyiv Independent, WSJ, AP — all stories first reported 24–26 Nov 2026.",
            font=SANS(11), fill=GREY)
     y += 16  # 1012
 
