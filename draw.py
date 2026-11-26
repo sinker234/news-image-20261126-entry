@@ -147,8 +147,8 @@ SMALL = [
     },
     {
         "kicker": "WEATHER",
-        "headline": "STORM BEARS DOWN ON THANKSGIVING",
-        "body": "A major storm bears down on the US East Coast for Thanksgiving.",
+        "headline": "THANKSGIVING STORM HITS EAST COAST",
+        "body": "550,000+ without power; 400+ flights cancelled, gusts hit 70 mph.",
     },
     {
         "kicker": "NEW YORK",
@@ -173,8 +173,8 @@ BRIEFS = [
     ("NORTH KOREA", "Kim vows to build more nuclear weapons after touring nuclear plants, KCNA says."),
     ("GULF OF FINLAND", "Ukraine confirms a strike on a Russian ship in the Gulf of Finland."),
     ("GAZA", "Netanyahu says Israel killed Hamas economy minister Khaled Abu Nada overnight."),
-    ("KINBURN SPIT", "About 100 civilians trapped on the spit, short of food and medicine."),
-    ("SAUDI ARABIA", "Saudi Arabia budgets a narrower deficit for 2027."),
+    ("RODGERS", "Steelers release Aaron Rodgers after he blasts coach Mike McCarthy on TV."),
+    ("MARINOVKA", "Neptune missiles hit Marinovka airfield and a Transneft station 1,000 km away."),
     ("AI SERVERS", "Records link Alice Huang firms to AI servers inside China."),
     ("NVIDIA", "Nvidia's Huang says he violated the company's code of conduct."),
     ("ZAPORIZHZHIA", "Barvinivka in Zaporizhzhia stays under Ukrainian control."),
@@ -188,7 +188,7 @@ BRIEFS = [
     ("ZNPP", "Zaporizhzhia plant loses outside power for the 17th time this year."),
     ("US ECONOMY", "US prices rise 3.8% in October; core PCE hits a three-year high."),
     ("JAZAN", "Houthi projectile hits Jazan port; minor damage, no casualties."),
-    ("OPEC+", "OPEC+ meets 29 Nov with the UAE out of the group."),
+    ("OPEC+", "OPEC+ meets 29 Nov; the UAE quit in May."),
 ]
 
 STORY_COUNT = 1 + len(MEDIUM) + len(SMALL) + len(BRIEFS)
